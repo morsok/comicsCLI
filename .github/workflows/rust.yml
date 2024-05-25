@@ -121,13 +121,13 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Install comics-cli
+      - name: Install semantic-release-cargo
         uses: taiki-e/install-action@v2
         with:
-          tool: comics-cli@2
+          tool: semantic-release-cargo@2
 
       - name: Prepare semantic-release for Rust
-        run: comics-cli prepare ${{ needs.get-next-version.outputs.new-release-version }}
+        run: semantic-release-cargo prepare ${{ needs.get-next-version.outputs.new-release-version }}
 
       - name: Install cross
         uses: taiki-e/install-action@v2
@@ -200,17 +200,6 @@ jobs:
           node-version: lts/*
           check-latest: true
           cache: npm
-
-      - name: Cache npm dependencies
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-
-      - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --ignore-scripts --loglevel error
 
       - name: Download release artifacts
         uses: actions/download-artifact@v4
