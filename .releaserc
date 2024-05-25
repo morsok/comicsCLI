@@ -1,0 +1,69 @@
+{
+  "branches": [{name: 'main', prerelease: true}],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/exec",
+      {
+        "verifyConditionsCmd": "./semantic-release-cargo verify-conditions",
+        "prepareCmd": "./semantic-release-cargo prepare ${nextRelease.version}",
+        "publishCmd": "./semantic-release-cargo publish"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "dist/x86_64-unknown-linux-musl/comics-cli-x86_64-unknown-linux-musl",
+            "label": "x86_64-unknown-linux-musl"
+          },
+          {
+            "path": "dist/x86_64-unknown-linux-gnu/comics-cli-x86_64-unknown-linux-gnu",
+            "label": "x86_64-unknown-linux-gnu"
+          },
+          {
+            "path": "dist/i686-unknown-linux-musl/comics-cli-i686-unknown-linux-musl",
+            "label": "i686-unknown-linux-musl"
+          },
+          {
+            "path": "dist/i686-unknown-linux-gnu/comics-cli-i686-unknown-linux-gnu",
+            "label": "i686-unknown-linux-gnu"
+          },
+          {
+            "path": "dist/x86_64-apple-darwin/comics-cli-x86_64-apple-darwin",
+            "label": "x86_64-apple-darwin"
+          },
+          {
+            "path": "dist/aarch64-unknown-linux-musl/comics-cli-aarch64-unknown-linux-musl",
+            "label": "aarch64-unknown-linux-musl"
+          },
+          {
+            "path": "dist/aarch64-unknown-linux-gnu/comics-cli-aarch64-unknown-linux-gnu",
+            "label": "aarch64-unknown-linux-gnu"
+          },
+          {
+            "path": "dist/aarch64-apple-darwin/comics-cli-aarch64-apple-darwin",
+            "label": "aarch64-apple-darwin"
+          },
+          {
+            "path": "dist/SHA256SUMS.txt",
+            "label": "SHA256SUMS.txt"
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md",
+          "Cargo.toml",
+          "Cargo.lock"
+        ]
+      }
+    ]
+  ]
+}
